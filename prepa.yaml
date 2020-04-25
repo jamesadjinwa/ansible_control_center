@@ -1,0 +1,75 @@
+---
+- name : Install and upgrade softwares
+  hosts : all
+  gather_facts : false
+
+  tasks: 
+
+    # - name: Check presence of Chocolatey
+    #   win_chocolatey:
+    #     name: chocolatey
+    #     state: present
+    #     force: yes
+    #     ignore_dependencies: yes
+
+    - name: Add my local (nexus) chocolatey source
+      win_chocolatey_source:
+        name: mynexusrepo
+        source: http://192.168.58.1:8081/service/local/nuget/chocorepotest
+        source_username: $ANSIBLE_VAULT;1.1;AES256
+          32623736363430646531376331363138643334633662643435386136643365643838343864303833
+          3337376133373738346236353666353337356663333663310a663562343233393661363336653864
+          33353333353435323561343863396462633839316633396361353636646537353466383535653962
+          6638643438353133330a636562616161383739356232633236623334313931653265333162383837
+          6435
+        source_password: $ANSIBLE_VAULT;1.1;AES256
+          35363036636434353164386338303233376231303931626465356132323838383862643932363063
+          6631623830323862353630636133353533393966383433650a376238626130663131626432303036
+          63326334626564663162633539616363386165373433326461306437656137623838366562346136
+          3763616236316332610a393335353330396239643136653434363831326332616265373562363433
+          3166
+        priority: 5
+        admin_only: yes
+        state: present
+
+    - name: Enable default chocolatey public repo
+      win_chocolatey_source:
+        name: chocolatey
+        source: 
+        admin_only: yes
+        state: present
+
+#-----------------------------------------------#
+#    Install softwares, packages and updates    #
+#-----------------------------------------------#
+
+    - name: Install 7zip, firefox, foxitreader, hp universal print driver plc, jinitiator
+      win_chocolatey:
+        name: 
+        - 7zip
+        - firefox
+        - foxitreader
+        - hp-universal-print-driver-pcl
+        - googlechrome
+        - jinitiator
+        source: mynexusrepo
+        ignore_dependencies: yes
+        state: latest
+
+# Check and Install Windows updates
+
+
+#------------------------------------#
+#    Configurations and settings     #
+#------------------------------------#
+
+# Enable Administrator Account, set password and disable password expiry
+
+# Disable "admin" account
+
+# Disable "cmbeac"
+
+# Activate Windows and Office licences
+
+# Install and update symantec endpoint protection
+
